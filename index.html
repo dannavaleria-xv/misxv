@@ -98,51 +98,74 @@ body{font-family:var(--ss);background:var(--dark);color:#fff;overflow-x:hidden;l
   100%{transform:translateY(-120px) translateX(var(--dx));opacity:0}
 }
 
-/* ── Hero content ── */
+/* ══ HERO LAYOUT — MOBILE FIRST ══
+   La foto es un backdrop absoluto detrás del texto.
+   En desktop vuelve a un grid de 2 columnas.
+*/
 .hero-body{
   position:relative;z-index:5;
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:48px;align-items:flex-end;
-  padding:110px 60px 0;
-  width:100%;max-width:1280px;
+  width:100%;min-height:100vh;
+  display:flex;
+  align-items:flex-end;
+  justify-content:flex-end;   /* texto pegado a la derecha */
+  padding:100px 20px 52px 20px;
 }
-/* Portrait photo */
+
+/* ── Foto: posición absoluta izquierda, detrás del texto ── */
 .hero-portrait-wrap{
-  position:relative;
-  display:flex;align-items:flex-end;justify-content:center;
-  /* glow ambiental abajo */
-}
-.hero-portrait-glow{
-  position:absolute;bottom:-20px;left:0;right:0;height:60%;z-index:0;
-  background:radial-gradient(ellipse 90% 80% at 50% 100%,rgba(79,142,247,.28),transparent 70%);
+  position:absolute;
+  left:0;bottom:0;top:0;
+  width:68%;          /* ocupa 68% izquierdo de la pantalla */
+  z-index:1;
+  display:flex;align-items:flex-end;
   pointer-events:none;
+}
+/* Glow ambiental */
+.hero-portrait-glow{
+  position:absolute;bottom:0;left:0;right:0;height:55%;z-index:0;
+  background:radial-gradient(ellipse 90% 80% at 35% 100%,rgba(79,142,247,.22),transparent 70%);
+}
+/* Fade lateral derecho — funde la foto con el fondo antes del texto */
+.hero-portrait-wrap::after{
+  content:'';position:absolute;right:0;top:0;bottom:0;
+  width:62%;z-index:3;pointer-events:none;
+  background:linear-gradient(to right,
+    transparent 0%,
+    rgba(2,8,24,.6) 40%,
+    rgba(2,8,24,.88) 68%,
+    #020818 90%);
 }
 .hero-portrait{
   position:relative;z-index:1;
-  opacity:0;animation:rise 1.2s ease .3s forwards;
   width:100%;
-  display:flex;align-items:flex-end;justify-content:center;
+  opacity:0;animation:rise 1.2s ease .3s forwards;
+  display:flex;align-items:flex-end;
 }
 .hero-portrait img{
   width:100%;height:auto;
-  max-height:78vh;
-  object-fit:contain;object-position:bottom center;
+  object-fit:contain;object-position:bottom left;
   display:block;
   filter:drop-shadow(0 20px 50px rgba(0,0,0,.8))
-         drop-shadow(0 0 50px rgba(79,142,247,.25));
+         drop-shadow(0 0 40px rgba(79,142,247,.2));
 }
-/* ── Fade en la base: oculta el corte inferior de la PNG ── */
+/* Fade inferior — oculta el corte de la PNG */
 .hero-portrait::after{
   content:'';position:absolute;bottom:0;left:0;right:0;
-  height:38%;z-index:2;pointer-events:none;
+  height:40%;z-index:2;pointer-events:none;
   background:linear-gradient(to bottom,
     transparent 0%,
-    rgba(2,8,24,.45) 45%,
-    rgba(2,8,24,.82) 70%,
+    rgba(2,8,24,.5) 45%,
+    rgba(2,8,24,.85) 72%,
     #020818 100%);
 }
-/* Text side */
-.hero-text{text-align:left;padding-bottom:40px}
+
+/* ── Texto: encima de la foto, alineado a la derecha ── */
+.hero-text{
+  position:relative;z-index:2;
+  text-align:left;
+  width:72%;         /* solapado sobre la foto, margen visual */
+  padding-bottom:32px;
+}
 .hero-eyebrow{
   font-size:.68rem;font-weight:700;letter-spacing:.38em;
   text-transform:uppercase;color:var(--g4);margin-bottom:12px;
@@ -746,70 +769,68 @@ footer{background:#010818;padding:56px 24px;text-align:center;
 /* ─── GALERÍA FOTOS REALES (legacy, unused) ─── */
 
 /* ══════════════════════════════════════
-   RESPONSIVE — MÓVIL PRIMERO (vertical)
+   RESPONSIVE
 ══════════════════════════════════════ */
 
-/* Tablet */
-@media(max-width:900px){
+/* ── Desktop: grid clásico de 2 columnas ── */
+@media(min-width:901px){
   .hero-body{
-    /* Mantener 2 columnas: foto | texto */
-    grid-template-columns:44% 56%;
-    gap:16px;
-    padding:78px 16px 0;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:0;
     align-items:flex-end;
+    padding:110px 60px 0;
+    justify-content:unset;
+  }
+  .hero-portrait-wrap{
+    position:relative;
+    left:auto;top:auto;bottom:auto;
+    width:100%;height:auto;
+  }
+  .hero-portrait-wrap::after{display:none}  /* sin fade lateral en desktop */
+  .hero-portrait img{
+    object-position:bottom center;
+    max-height:82vh;
   }
   .hero-text{
-    text-align:left;
-    padding-bottom:32px;
+    width:100%;
+    padding-bottom:60px;
+    padding-left:20px;
   }
-  .hero-eyebrow{font-size:.58rem;letter-spacing:.28em;margin-bottom:8px}
-  .hero-xv{font-size:.82rem}
-  .hero-name{font-size:clamp(2rem,7.5vw,3.5rem);line-height:.9}
-  .hero-surname{font-size:clamp(.82rem,2.5vw,1.2rem);margin-bottom:12px}
-  .hero-quote{font-size:.72rem;margin-bottom:14px}
-  .hero-date{padding:6px 14px;margin-bottom:14px;gap:6px}
-  .hero-date span{font-size:.6rem}
-  .countdown{grid-template-columns:repeat(2,1fr);gap:6px;margin-bottom:10px}
-  .cd-box{padding:10px 4px}
-  .cd-n{font-size:clamp(1.3rem,4vw,2rem)}
+  .countdown{grid-template-columns:repeat(4,1fr)}
+  .hero-quote{display:block}
+}
+
+/* ── Móvil vertical (base, ya definido arriba) ── */
+/* 480px — ajustes de texto */
+@media(max-width:480px){
+  .hero-body{padding:80px 16px 44px 16px}
+  .hero-portrait-wrap{width:72%}
+  .hero-text{width:80%}
+  .hero-name{font-size:clamp(2.2rem,9vw,3.4rem)}
+  .hero-surname{font-size:clamp(.85rem,2.8vw,1.1rem);margin-bottom:12px}
+  .hero-quote{display:none}
+  .hero-date{padding:6px 14px;margin-bottom:14px}
+  .countdown{grid-template-columns:repeat(2,1fr);gap:6px;margin-bottom:8px}
+  .cd-box{padding:9px 4px}
+  .cd-n{font-size:clamp(1.4rem,5vw,1.9rem)}
   .cd-l{font-size:.48rem}
-  #cdMsg{font-size:.65rem;margin-top:6px}
-  .hero-portrait img{max-height:72vw}
-  .carousel-wrap{max-width:88vw}
+  #cdMsg{font-size:.64rem;margin-top:6px}
   .scroll-arrow{display:none}
+  .section{padding:72px 0}
+  .carousel-wrap{max-width:92vw}
+  .car-btn{width:36px;height:36px}
 }
 
-/* Móvil pequeño */
-@media(max-width:540px){
-  .hero-body{
-    grid-template-columns:42% 58%;
-    gap:10px;
-    padding:68px 10px 0;
-  }
-  .hero-text{padding-bottom:24px}
-  .hero-name{font-size:clamp(1.7rem,8.5vw,2.8rem)}
-  .hero-surname{font-size:.78rem;margin-bottom:8px}
-  .hero-quote{display:none} /* quita la quote en pantallas muy pequeñas */
-  .hero-date{padding:5px 10px;margin-bottom:10px}
-  .hero-date-dot{display:none}
-  .countdown{gap:5px}
-  .cd-box{padding:8px 2px}
-  .cd-n{font-size:clamp(1.1rem,5vw,1.6rem)}
-  .hero-portrait img{max-height:74vw}
-  .carousel-wrap{max-width:95vw}
-  .car-btn{width:34px;height:34px}
-  .section{padding:64px 0}
-}
-
-/* Extra pequeño */
+/* 380px — pantallas muy pequeñas */
 @media(max-width:380px){
-  .hero-body{
-    grid-template-columns:40% 60%;
-    padding:64px 8px 0;gap:8px;
-  }
-  .hero-name{font-size:clamp(1.5rem,9vw,2.2rem)}
+  .hero-body{padding:72px 12px 38px 12px}
+  .hero-portrait-wrap{width:74%}
+  .hero-text{width:84%}
+  .hero-name{font-size:clamp(1.9rem,9.5vw,2.8rem)}
   .hero-eyebrow{display:none}
-  .hero-portrait img{max-height:76vw}
+  .hero-date span{font-size:.58rem}
+  .hero-date-dot{display:none}
 }
 </style>
 </head>
@@ -1281,7 +1302,27 @@ footer{background:#010818;padding:56px 24px;text-align:center;
 </div>
 
 <!-- ── AUDIO ENGINE ── -->
-<audio id="bgAudio" preload="auto" loop autoplay muted>
+<!-- Tap-to-start overlay (solo si autoplay falla) -->
+<div id="tapOverlay" style="
+  position:fixed;inset:0;z-index:9000;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:rgba(2,8,24,.88);backdrop-filter:blur(20px);
+  cursor:pointer;transition:opacity .6s ease;
+">
+  <div style="
+    width:80px;height:80px;border-radius:50%;
+    background:linear-gradient(135deg,#2D6BE4,#4F8EF7);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 0 0 18px rgba(79,142,247,.15),0 0 0 36px rgba(79,142,247,.07);
+    margin-bottom:24px;animation:lightPulse 2s ease-in-out infinite;
+  ">
+    <svg viewBox="0 0 24 24" fill="white" width="32" height="32"><polygon points="5,3 19,12 5,21"/></svg>
+  </div>
+  <p style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:#fff;margin-bottom:6px">Toca para comenzar</p>
+  <p style="font-size:.75rem;color:rgba(147,197,253,.7);letter-spacing:.15em;text-transform:uppercase">🎵 Video Games · Lana Del Rey</p>
+</div>
+
+<audio id="bgAudio" preload="auto" loop>
   <source src="musica.mp3" type="audio/mpeg">
 </audio>
 
@@ -1734,39 +1775,48 @@ function submitRSVP(e){
   // Scroll → show/hide floating player
   window.addEventListener('scroll', updateFloat, {passive:true});
 
-  // ══ AUTOPLAY REAL ══
-  // Estrategia: muted autoplay (siempre permitido) → unmute inmediato
-  // Todos los navegadores permiten autoplay si está muted.
-  audio.volume = 0.30;
-  audio.muted  = true;   // empieza muted para saltarse la política
+  // ══ AUTOPLAY — máxima compatibilidad ══
+  const overlay = document.getElementById('tapOverlay');
+  audio.volume  = 0.30;
 
-  function unmuteAndPlay(){
-    audio.muted = false;
-    audio.volume = 0.30;
+  function hideTapOverlay(){
+    if(!overlay) return;
+    overlay.style.opacity = '0';
+    overlay.style.pointerEvents = 'none';
+    setTimeout(()=>{ if(overlay.parentNode) overlay.parentNode.removeChild(overlay); }, 650);
   }
 
-  // Intentar reproducir muted apenas cargue
-  const startMuted = () => {
+  function startAudio(){
+    audio.muted = false;
+    audio.volume = 0.30;
+    return audio.play();
+  }
+
+  // Intento 1: muted trick (funciona en Chrome/Android)
+  audio.muted = true;
+  const tryMuted = () =>{
     audio.play().then(()=>{
-      // Éxito con muted → unmutear inmediatamente
-      setTimeout(unmuteAndPlay, 80);
+      // Reproduciéndose muted → desmutear y ocultar overlay
+      setTimeout(()=>{ audio.muted = false; hideTapOverlay(); }, 60);
     }).catch(()=>{
-      // Fallo raro → esperar interacción
-      const onTouch = () => {
-        audio.muted = false;
-        audio.play().catch(()=>{});
-        document.removeEventListener('touchstart', onTouch);
-        document.removeEventListener('click', onTouch);
-      };
-      document.addEventListener('touchstart', onTouch, {passive:true});
-      document.addEventListener('click',      onTouch, {once:true});
+      // Falló (iOS Safari) → dejar overlay visible, al tocar se inicia
     });
   };
 
-  if(audio.readyState >= 2){
-    startMuted();
-  } else {
-    audio.addEventListener('canplay', startMuted, {once:true});
+  if(audio.readyState >= 2){ tryMuted(); }
+  else { audio.addEventListener('canplay', tryMuted, {once:true}); }
+
+  // Intento 2: overlay "tap to start" — siempre funciona
+  if(overlay){
+    overlay.addEventListener('click', ()=>{
+      audio.muted = false;
+      audio.play().catch(()=>{});
+      hideTapOverlay();
+    }, {once:true});
+    // Si ya está sonando (muted trick ok) → ocultar el overlay al instante
+    audio.addEventListener('play', ()=>{
+      if(!audio.muted) hideTapOverlay();
+    });
   }
 
   // Init icons
