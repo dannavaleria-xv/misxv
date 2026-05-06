@@ -107,29 +107,25 @@ body{font-family:var(--ss);background:var(--dark);color:#fff;overflow-x:hidden;l
   width:100%;max-width:1280px;
 }
 /* Portrait photo */
-.hero-portrait-wrap{position:relative}
+.hero-portrait-wrap{position:relative;display:flex;align-items:flex-end;justify-content:center}
 .hero-portrait-glow{
   position:absolute;inset:-30px;border-radius:32px;z-index:0;
-  background:radial-gradient(ellipse 80% 60% at 50% 80%,rgba(79,142,247,.28),transparent 70%);
+  background:radial-gradient(ellipse 80% 70% at 50% 90%,rgba(79,142,247,.35),transparent 70%);
   pointer-events:none;
 }
 .hero-portrait{
   position:relative;z-index:1;
-  border-radius:24px;overflow:hidden;
-  aspect-ratio:3/4;max-height:65vh;width:100%;
-  box-shadow:0 40px 100px rgba(0,0,0,.7),
-             0 0 80px rgba(79,142,247,.25),
-             0 0 0 1px rgba(147,197,253,.2);
   opacity:0;animation:rise 1.2s ease .3s forwards;
+  max-height:74vh;width:100%;
+  display:flex;align-items:flex-end;justify-content:center;
 }
 .hero-portrait img{
-  width:100%;height:100%;object-fit:cover;
-  object-position:top center;display:block;
-}
-.hero-portrait::after{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(180deg,transparent 55%,rgba(2,8,24,.65) 100%);
-  pointer-events:none;
+  width:auto;max-width:100%;max-height:74vh;
+  object-fit:contain;object-position:bottom center;
+  display:block;
+  filter:drop-shadow(0 30px 60px rgba(0,0,0,.75))
+         drop-shadow(0 0 60px rgba(79,142,247,.3))
+         drop-shadow(0 0 120px rgba(79,142,247,.12));
 }
 /* Text side */
 .hero-text{text-align:left}
@@ -335,39 +331,70 @@ body{font-family:var(--ss);background:var(--dark);color:#fff;overflow-x:hidden;l
 .dc-note-text{font-size:.88rem;color:rgba(255,255,255,.8);font-style:italic}
 .dc-note strong{color:var(--g4)}
 
-/* ─── GALLERY ─── */
+/* ─── GALLERY / CAROUSEL ─── */
 #galeria{padding:100px 0;background:var(--darkm)}
 .gal-head{text-align:center;margin-bottom:52px}
 .gal-note{font-size:.82rem;color:rgba(255,255,255,.35);margin-top:6px}
-.gal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-@media(max-width:680px){.gal-grid{grid-template-columns:repeat(2,1fr);gap:10px}}
-.gal-item{
-  aspect-ratio:3/4;border-radius:14px;overflow:hidden;
-  cursor:pointer;transition:all .4s ease;
-  border:1px solid rgba(147,197,253,.1);position:relative;
+
+/* Carousel wrapper */
+.carousel-wrap{
+  position:relative;max-width:560px;margin:0 auto;
+  border-radius:24px;overflow:hidden;
+  box-shadow:0 32px 80px rgba(0,0,0,.6),0 0 60px rgba(79,142,247,.12),
+             0 0 0 1px rgba(147,197,253,.12);
 }
-.gal-item:hover{transform:scale(1.04);
-  border-color:rgba(147,197,253,.45);
-  box-shadow:0 16px 48px rgba(79,142,247,.2)}
-.gal-ph{width:100%;height:100%;position:relative;overflow:hidden;
-  display:flex;align-items:center;justify-content:center}
-.gal-item:nth-child(1) .gal-ph{background:linear-gradient(160deg,#040f2d,#0c3272,#4f8ef7)}
-.gal-item:nth-child(2) .gal-ph{background:linear-gradient(160deg,#0c2560,#0ea5e9,#7dd3fc)}
-.gal-item:nth-child(3) .gal-ph{background:linear-gradient(200deg,#1e3a8a,#0d9488,#67e8f9)}
-.gal-item:nth-child(4) .gal-ph{background:linear-gradient(130deg,#0a1440,#1d4ed8,#93C5FD)}
-.gal-item:nth-child(5) .gal-ph{background:linear-gradient(160deg,#040f2d,#1e40af,#60A5FA)}
-.gal-item:nth-child(6) .gal-ph{background:linear-gradient(180deg,#01132e,#0c3b8a,#38bdf8)}
-.gal-ph-num{
-  font-family:var(--sf);font-size:5rem;font-weight:700;
-  color:rgba(255,255,255,.07);position:absolute;bottom:8px;right:14px;line-height:1}
-.gal-ph-label{
-  font-size:.65rem;font-weight:700;letter-spacing:.2em;
-  text-transform:uppercase;color:rgba(255,255,255,.22);position:relative;z-index:1}
-.gal-lines{position:absolute;inset:0;pointer-events:none}
-.gal-lh{position:absolute;top:50%;left:15%;right:15%;
-  height:1px;background:rgba(255,255,255,.07);transform:translateY(-50%)}
-.gal-lv{position:absolute;left:50%;top:15%;bottom:15%;
-  width:1px;background:rgba(255,255,255,.07);transform:translateX(-50%)}
+.carousel-track{
+  display:flex;
+  transition:transform .6s cubic-bezier(.25,.46,.45,.94);
+  will-change:transform;
+}
+.car-slide{
+  flex:0 0 100%;
+  aspect-ratio:3/4;
+  background:#020818;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.car-slide img{
+  width:100%;height:100%;
+  object-fit:cover;object-position:top center;
+  display:block;
+  transition:transform .6s ease;
+}
+.car-slide.active img{transform:scale(1)}
+/* Nav buttons */
+.car-btn{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:44px;height:44px;border-radius:50%;border:none;
+  background:rgba(10,20,64,.75);backdrop-filter:blur(12px);
+  border:1px solid rgba(147,197,253,.2);
+  color:#fff;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .25s ease;z-index:10;
+}
+.car-btn:hover{background:rgba(79,142,247,.35);border-color:rgba(147,197,253,.5);
+  transform:translateY(-50%) scale(1.1)}
+.car-prev{left:14px}
+.car-next{right:14px}
+.car-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.5}
+/* Dots */
+.car-dots{
+  position:absolute;bottom:14px;left:50%;transform:translateX(-50%);
+  display:flex;gap:7px;z-index:10;
+}
+.car-dot{
+  width:7px;height:7px;border-radius:50%;border:none;cursor:pointer;
+  background:rgba(255,255,255,.25);transition:all .3s ease;padding:0;
+}
+.car-dot.active{background:var(--g4);width:22px;border-radius:4px}
+/* Counter badge */
+.car-counter{
+  position:absolute;top:14px;right:14px;z-index:10;
+  background:rgba(10,20,64,.75);backdrop-filter:blur(12px);
+  border:1px solid rgba(147,197,253,.15);border-radius:20px;
+  padding:4px 12px;font-size:.68rem;font-weight:600;
+  color:rgba(255,255,255,.6);letter-spacing:.1em;
+}
 
 /* ─── MUSIC ─── */
 #musica{padding:100px 0;background:var(--dark)}
@@ -702,33 +729,31 @@ footer{background:#010818;padding:56px 24px;text-align:center;
 /* ─── LEAF FALL animations (used by canvas) ─── */
 @keyframes leafSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 
-/* ─── GALERÍA FOTOS REALES ─── */
-.gal-item img{
-  width:100%;height:100%;object-fit:cover;
-  object-position:top center;display:block;
-  border-radius:14px;
-  transition:transform .5s ease;
-}
-.gal-item:hover img{transform:scale(1.06)}
+/* ─── GALERÍA FOTOS REALES (legacy, unused) ─── */
 
 /* ─── RESPONSIVE ─── */
 @media(max-width:900px){
   .hero-body{
     grid-template-columns:1fr;
     padding:100px 24px 70px;
-    gap:36px;
+    gap:24px;
   }
   .hero-text{text-align:center}
   .hero-date{justify-content:center}
   .countdown{justify-content:center}
-  .hero-portrait{aspect-ratio:4/5;max-height:420px}
+  .hero-portrait{max-height:52vw}
+  .hero-portrait img{max-height:52vw}
+  .carousel-wrap{max-width:90vw}
 }
 @media(max-width:480px){
   .section{padding:72px 0}
-  .hero-body{padding:90px 18px 60px;gap:28px}
+  .hero-body{padding:90px 18px 60px;gap:18px}
   .countdown{gap:8px}
   .cd-box{padding:14px 6px}
-  .hero-portrait{aspect-ratio:3/4;max-height:340px}
+  .hero-portrait{max-height:260px}
+  .hero-portrait img{max-height:260px}
+  .carousel-wrap{max-width:95vw}
+  .car-btn{width:36px;height:36px}
 }
 </style>
 </head>
@@ -761,12 +786,12 @@ footer{background:#010818;padding:56px 24px;text-align:center;
 
   <div class="hero-body">
 
-    <!-- ── Columna izquierda: Foto principal ── -->
+    <!-- ── Columna izquierda: Foto principal PNG transparente ── -->
     <div class="hero-portrait-wrap">
       <div class="hero-portrait-glow"></div>
       <div class="hero-portrait">
         <img
-          src="fotos/DSC06603.jpg"
+          src="fotos-web/PRINCIPAL.png"
           alt="Danna Valeria Torres Martínez · XV Años"
           loading="eager"
         >
@@ -981,25 +1006,27 @@ footer{background:#010818;padding:56px 24px;text-align:center;
       <div class="s-accent"></div>
       <p class="gal-note">Un vistazo a la quinceañera antes de la gran noche</p>
     </div>
-    <div class="gal-grid">
-      <div class="rv gal-item" style="transition-delay:.04s">
-        <img src="fotos/DSC06610.png" alt="Danna Valeria" loading="lazy">
+    <!-- CARRUSEL -->
+    <div class="rv carousel-wrap" id="carouselWrap">
+      <div class="carousel-track" id="carTrack">
+        <div class="car-slide active"><img src="fotos-web/DSC06610.jpg" alt="Danna Valeria" loading="lazy"></div>
+        <div class="car-slide"><img src="fotos-web/DSC06606.jpg" alt="Danna Valeria" loading="lazy"></div>
+        <div class="car-slide"><img src="fotos-web/DSC06612.jpg" alt="Danna Valeria" loading="lazy"></div>
+        <div class="car-slide"><img src="fotos-web/DSC06617.jpg" alt="Danna Valeria" loading="lazy"></div>
+        <div class="car-slide"><img src="fotos-web/DSC06484.jpg" alt="Danna Valeria" loading="lazy"></div>
+        <div class="car-slide"><img src="fotos-web/DSC06399.jpg" alt="Danna Valeria" loading="lazy"></div>
       </div>
-      <div class="rv gal-item" style="transition-delay:.08s">
-        <img src="fotos/DSC06606.jpg" alt="Danna Valeria" loading="lazy">
-      </div>
-      <div class="rv gal-item" style="transition-delay:.12s">
-        <img src="fotos/DSC06612.jpg" alt="Danna Valeria" loading="lazy">
-      </div>
-      <div class="rv gal-item" style="transition-delay:.16s">
-        <img src="fotos/DSC06617.png" alt="Danna Valeria" loading="lazy">
-      </div>
-      <div class="rv gal-item" style="transition-delay:.20s">
-        <img src="fotos/DSC06484.jpg" alt="Danna Valeria" loading="lazy">
-      </div>
-      <div class="rv gal-item" style="transition-delay:.24s">
-        <img src="fotos/DSC06399.jpg" alt="Danna Valeria" loading="lazy">
-      </div>
+      <!-- Flechas -->
+      <button class="car-btn car-prev" id="carPrev" aria-label="Anterior">
+        <svg viewBox="0 0 24 24"><polyline points="15,18 9,12 15,6"/></svg>
+      </button>
+      <button class="car-btn car-next" id="carNext" aria-label="Siguiente">
+        <svg viewBox="0 0 24 24"><polyline points="9,18 15,12 9,6"/></svg>
+      </button>
+      <!-- Dots -->
+      <div class="car-dots" id="carDots"></div>
+      <!-- Counter -->
+      <div class="car-counter" id="carCounter">1 / 6</div>
     </div>
   </div>
 </section>
@@ -1651,24 +1678,90 @@ function submitRSVP(e){
   // Scroll → show/hide floating player
   window.addEventListener('scroll', updateFloat, {passive:true});
 
-  // Autoplay on first interaction with the page (low volume, feels ambient)
-  let autoTried = false;
-  function tryAutoplay(){
-    if(autoTried) return;
-    autoTried = true;
-    audio.volume = 0.28;
-    audio.play().catch(() => { /* user may interact later */ });
-    document.removeEventListener('click',      tryAutoplay);
-    document.removeEventListener('touchstart', tryAutoplay);
-    document.removeEventListener('keydown',    tryAutoplay);
-    document.removeEventListener('scroll',     tryAutoplay);
+  // ── Autoplay inmediato al cargar ──
+  // Los navegadores modernos bloquean autoplay sin interacción;
+  // intentamos primero y si falla esperamos el primer toque/clic.
+  audio.volume = 0.28;
+  function doPlay(){ audio.play().catch(()=>{}); }
+
+  // Intento 1: al cargar metadatos
+  audio.addEventListener('loadedmetadata', ()=>{
+    doPlay();
+  }, {once:true});
+
+  // Intento 2: inmediato si ya cargó
+  if(audio.readyState >= 1){ doPlay(); }
+
+  // Fallback: primer gesto del usuario
+  let interacted = false;
+  function onInteract(){
+    if(interacted || !audio.paused) return;
+    interacted = true;
+    doPlay();
   }
-  ['click','touchstart','keydown','scroll'].forEach(e =>
-    document.addEventListener(e, tryAutoplay, {once:true, passive:true})
+  ['click','touchstart','keydown','scroll'].forEach(ev =>
+    document.addEventListener(ev, onInteract, {once:true, passive:true})
   );
 
   // Init icons
   setPlayState(false);
+})();
+
+/* ═══════════════════════════════════════════════
+   CARRUSEL GALERÍA
+═══════════════════════════════════════════════ */
+(function(){
+  const track   = document.getElementById('carTrack');
+  if(!track) return;
+  const slides  = Array.from(track.querySelectorAll('.car-slide'));
+  const dotsEl  = document.getElementById('carDots');
+  const counter = document.getElementById('carCounter');
+  const btnPrev = document.getElementById('carPrev');
+  const btnNext = document.getElementById('carNext');
+  const total   = slides.length;
+  let current   = 0;
+  let timer     = null;
+
+  // Crear dots
+  slides.forEach((_,i)=>{
+    const d = document.createElement('button');
+    d.className = 'car-dot' + (i===0?' active':'');
+    d.setAttribute('aria-label', `Foto ${i+1}`);
+    d.addEventListener('click', ()=> goTo(i));
+    dotsEl.appendChild(d);
+  });
+
+  function goTo(idx){
+    slides[current].classList.remove('active');
+    dotsEl.children[current].classList.remove('active');
+    current = (idx + total) % total;
+    track.style.transform = `translateX(-${current * 100}%)`;
+    slides[current].classList.add('active');
+    dotsEl.children[current].classList.add('active');
+    if(counter) counter.textContent = `${current+1} / ${total}`;
+    resetTimer();
+  }
+
+  function next(){ goTo(current + 1); }
+  function prev(){ goTo(current - 1); }
+
+  btnNext.addEventListener('click', next);
+  btnPrev.addEventListener('click', prev);
+
+  // Auto-avance cada 4 s
+  function resetTimer(){
+    clearInterval(timer);
+    timer = setInterval(next, 4000);
+  }
+  resetTimer();
+
+  // Swipe táctil
+  let startX = 0;
+  track.addEventListener('touchstart', e=>{ startX = e.touches[0].clientX; }, {passive:true});
+  track.addEventListener('touchend',   e=>{
+    const dx = e.changedTouches[0].clientX - startX;
+    if(Math.abs(dx) > 40){ dx < 0 ? next() : prev(); }
+  }, {passive:true});
 })();
 </script>
 </body>
