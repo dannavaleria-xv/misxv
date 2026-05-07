@@ -99,56 +99,54 @@ body{font-family:var(--ss);background:var(--dark);color:#fff;overflow-x:hidden;l
 }
 
 /* ══ HERO LAYOUT ══
-   Foto: absoluta, bottom-left, nunca tapa el texto
-   Texto: columna derecha, nombre arriba, countdown abajo
+   Grid 2 cols. Foto: alineada abajo, tamaño del countdown.
+   Texto: columna derecha, nombre arriba, countdown abajo.
 */
 #hero{overflow:hidden}
 .hero-body{
   position:relative;z-index:5;
   width:100%;min-height:100vh;
   display:grid;
-  grid-template-columns:46% 54%;
-  grid-template-rows:1fr;
+  grid-template-columns:44% 56%;
   padding:0;
 }
 
-/* ── Foto: ocupa su columna completa, alineada abajo ── */
+/* ── Foto: bottom, misma altura que el countdown ── */
 .hero-portrait-wrap{
-  grid-column:1;
+  align-self:end;           /* pega la foto al fondo del grid */
   position:relative;
-  display:flex;align-items:flex-end;justify-content:flex-end;
+  padding:0 4px 36px 12px;
+  display:flex;align-items:flex-end;
   z-index:1;
-  padding-left:8px;
 }
 .hero-portrait-glow{
-  position:absolute;bottom:0;left:5%;right:0;height:50%;z-index:0;
-  background:radial-gradient(ellipse 90% 70% at 50% 100%,rgba(79,142,247,.3),transparent 70%);
+  position:absolute;bottom:30px;left:10%;right:10%;height:40%;z-index:0;
+  background:radial-gradient(ellipse 80% 70% at 50% 100%,rgba(79,142,247,.3),transparent 70%);
   pointer-events:none;
 }
 .hero-portrait{
   position:relative;z-index:1;width:100%;
   opacity:0;animation:rise 1.2s ease .3s forwards;
-  display:flex;align-items:flex-end;
 }
 .hero-portrait img{
   width:100%;height:auto;
+  max-height:150px;         /* mismo rango visual que las 2 filas del countdown */
   object-fit:contain;object-position:bottom center;
   display:block;
-  filter:drop-shadow(0 16px 40px rgba(0,0,0,.85))
-         drop-shadow(0 0 36px rgba(79,142,247,.3));
+  filter:drop-shadow(0 10px 30px rgba(0,0,0,.8))
+         drop-shadow(0 0 28px rgba(79,142,247,.3));
 }
 .hero-portrait::after{
   content:'';position:absolute;bottom:0;left:0;right:0;
-  height:32%;z-index:2;pointer-events:none;
-  background:linear-gradient(to bottom,transparent 0%,rgba(2,8,24,.55) 55%,#020818 100%);
+  height:30%;z-index:2;pointer-events:none;
+  background:linear-gradient(to bottom,transparent 0%,rgba(2,8,24,.6) 60%,#020818 100%);
 }
 
 /* ── Texto: columna derecha — nombre arriba, countdown abajo ── */
 .hero-text{
-  grid-column:2;
   display:flex;flex-direction:column;
   justify-content:space-between;
-  padding:100px 16px 36px 10px;
+  padding:90px 16px 36px 10px;
   min-height:100vh;
   text-align:left;
   z-index:2;
@@ -604,27 +602,40 @@ body{font-family:var(--ss);background:var(--dark);color:#fff;overflow-x:hidden;l
 }
 
 /* ─── REGALOS ─── */
-#regalos{padding:100px 0}
+#regalos{padding:120px 0}
 .reg-photo{position:absolute;inset:0;
   background:url('https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=1920&q=80') center/cover;
-  filter:brightness(.22) saturate(.8)}
-.reg-card{max-width:700px;margin:0 auto;padding:60px;text-align:center}
+  filter:brightness(.18) saturate(.7)}
+.reg-card{max-width:760px;margin:0 auto;padding:70px 60px;text-align:center;
+  border:1px solid rgba(212,175,55,.25);
+  box-shadow:0 0 60px rgba(212,175,55,.08),0 30px 80px rgba(0,0,0,.6)}
+.reg-card::before{content:'';position:absolute;top:0;left:0;right:0;
+  height:3px;background:linear-gradient(90deg,transparent,var(--gold),var(--g4),var(--gold),transparent)}
 .reg-card::after{content:'';position:absolute;bottom:0;left:0;right:0;
-  height:2px;background:linear-gradient(90deg,var(--g2),var(--g4),var(--gold))}
-.reg-vis{width:72px;height:72px;margin:0 auto 28px;position:relative}
+  height:3px;background:linear-gradient(90deg,transparent,var(--g4),var(--gold),var(--g4),transparent)}
+.reg-vis{width:110px;height:110px;margin:0 auto 36px;position:relative}
 .reg-rect{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
-.reg-outer{width:54px;height:42px;border:1.5px solid var(--g4);border-radius:5px}
-.reg-vl{width:1.5px;height:42px;background:rgba(147,197,253,.3)}
-.reg-hl{width:54px;height:1.5px;background:rgba(147,197,253,.3)}
-.reg-glow{position:absolute;width:160px;height:160px;border-radius:50%;
-  background:radial-gradient(circle,rgba(79,142,247,.06),transparent 70%);
-  top:50%;left:50%;transform:translate(-50%,-50%)}
-.reg-label{font-size:.72rem;font-weight:700;letter-spacing:.3em;
-  text-transform:uppercase;color:var(--g4);margin-bottom:10px}
-.reg-title{font-family:var(--sf);font-size:clamp(1.8rem,3vw,2.5rem);
-  font-weight:700;color:var(--g1);margin-bottom:20px}
-.reg-text{font-size:.95rem;color:rgba(255,255,255,.6);
-  line-height:1.85;max-width:460px;margin:0 auto}
+.reg-outer{width:80px;height:62px;border:2px solid rgba(212,175,55,.6);border-radius:6px}
+.reg-vl{width:2px;height:62px;background:rgba(212,175,55,.35)}
+.reg-hl{width:80px;height:2px;background:rgba(212,175,55,.35)}
+.reg-glow{position:absolute;width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle,rgba(212,175,55,.15),transparent 70%);
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  animation:regPulse 3s ease-in-out infinite}
+@keyframes regPulse{0%,100%{opacity:.6;transform:translate(-50%,-50%) scale(1)}
+  50%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}}
+.reg-label{font-size:.72rem;font-weight:700;letter-spacing:.35em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:14px;opacity:.85}
+.reg-title{font-family:var(--sf);font-size:clamp(2.2rem,4vw,3.2rem);
+  font-weight:800;margin-bottom:24px;
+  background:linear-gradient(135deg,#fff 30%,var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.reg-divider{width:60px;height:2px;margin:0 auto 28px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.reg-text{font-size:1rem;color:rgba(255,255,255,.7);
+  line-height:2;max-width:500px;margin:0 auto}
+.reg-sobres-icon{font-size:3.2rem;margin-bottom:18px;display:block;
+  filter:drop-shadow(0 0 18px rgba(212,175,55,.5))}
 
 /* ─── CONFIRMACIÓN ─── */
 #confirmacion{padding:130px 0;position:relative;overflow:hidden}
@@ -762,17 +773,24 @@ footer{background:#010818;padding:56px 24px;text-align:center;
    RESPONSIVE
 ══════════════════════════════════════ */
 
-/* ── Desktop ── */
+/* ── Desktop: foto vuelve a ser grande ── */
 @media(min-width:901px){
   .hero-body{
     grid-template-columns:1fr 1fr;
     min-height:100vh;
   }
+  .hero-portrait-wrap{
+    align-self:stretch;      /* ocupa toda la altura en desktop */
+    padding:0 0 0 20px;
+    align-items:flex-end;
+  }
+  .hero-portrait img{
+    max-height:86vh;         /* foto grande en desktop */
+  }
   .hero-text{
     padding:120px 40px 60px 28px;
-    justify-content:space-between;
   }
-  .hero-name{font-size:clamp(3.2rem,6vw,5.5rem)}
+  .hero-name{font-size:clamp(3rem,5.5vw,5.5rem)}
   .hero-surname{font-size:clamp(1.1rem,1.8vw,1.7rem);margin-bottom:18px}
   .hero-quote{display:block;margin-bottom:18px}
   .hero-eyebrow{font-size:.65rem;margin-bottom:14px}
@@ -783,9 +801,7 @@ footer{background:#010818;padding:56px 24px;text-align:center;
   .cd-box{padding:15px 8px}
   .cd-n{font-size:clamp(1.6rem,2.8vw,2.4rem)}
   .cd-l{font-size:.55rem}
-  .hero-portrait img{max-height:88vh}
   .scroll-arrow{display:flex}
-  .hero-portrait-wrap{padding-left:20px}
 }
 
 /* ── Móvil (hasta 900px) ── */
@@ -857,11 +873,7 @@ footer{background:#010818;padding:56px 24px;text-align:center;
     <div class="hero-portrait-wrap">
       <div class="hero-portrait-glow"></div>
       <div class="hero-portrait">
-        <img
-          src="fotos-web/PRINCIPAL.png"
-          alt="Danna Valeria Torres Martínez · XV Años"
-          loading="eager"
-        >
+        <!-- foto removida -->
       </div>
     </div>
 
@@ -963,7 +975,7 @@ footer{background:#010818;padding:56px 24px;text-align:center;
             <div class="ev-ico"><svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
             <div class="ev-meta"><strong>Lugar</strong><span>Calle 1° de Enero Ote. 107<br>Nuevo México, Jal. 45138</span></div>
           </div>
-          <a href="https://www.google.com/maps/search/?api=1&query=Calle+1+de+Enero+Ote+107+Nuevo+Mexico+Jalisco+45138" target="_blank" class="btn-dir" style="background:linear-gradient(135deg,#0284c7,#0ea5e9)">
+          <a href="https://share.google/GfiqPknOhomUv8F0p" target="_blank" class="btn-dir" style="background:linear-gradient(135deg,#0284c7,#0ea5e9)">
             <svg viewBox="0 0 24 24" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
             Cómo Llegar
           </a>
@@ -1046,10 +1058,10 @@ footer{background:#010818;padding:56px 24px;text-align:center;
         <div class="dc-rule"><div class="dc-ico"><svg viewBox="0 0 24 24" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
           <div><strong>Estilo</strong><span>Colores elegantes, evitar casual</span></div></div>
         <div class="dc-rule"><div class="dc-ico"><svg viewBox="0 0 24 24" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-          <div><strong>Reservado</strong><span>El verde es exclusivo de la festejada</span></div></div>
+          <div><strong>Reservado</strong><span>El azul es exclusivo de la festejada</span></div></div>
       </div>
       <div class="dc-note"><div class="dc-pip"></div>
-        <span class="dc-note-text">El tono <strong>verde</strong> está reservado exclusivamente para <strong>Danna Valeria</strong> — agradecemos evitarlo en el vestuario.</span>
+        <span class="dc-note-text">El tono <strong>azul</strong> está reservado exclusivamente para <strong>Danna Valeria</strong> — agradecemos evitarlo en el vestuario.</span>
       </div>
     </div>
   </div>
@@ -1184,6 +1196,7 @@ footer{background:#010818;padding:56px 24px;text-align:center;
   <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(2,8,24,.82),rgba(10,20,64,.88))"></div>
   <div class="wrap" style="position:relative;z-index:1">
     <div class="rv glass reg-card" style="position:relative">
+      <span class="reg-sobres-icon">✉️</span>
       <div class="reg-vis">
         <div class="reg-glow"></div>
         <div class="reg-rect reg-outer"></div>
@@ -1192,7 +1205,8 @@ footer{background:#010818;padding:56px 24px;text-align:center;
       </div>
       <p class="reg-label">Mesa de regalos</p>
       <h2 class="reg-title">Lluvia de Sobres</h2>
-      <p class="reg-text">Tu presencia es el mejor regalo.<br>Si deseas hacerme un obsequio, una lluvia de sobres será bienvenida con todo mi cariño.<br><br>Lo que más importa es celebrar juntos este día tan especial.</p>
+      <div class="reg-divider"></div>
+      <p class="reg-text">Tu presencia es el mejor regalo.<br>Si deseas hacerme un obsequio, una <strong style="color:rgba(212,175,55,.9)">lluvia de sobres</strong> será bienvenida con todo mi cariño.<br><br>Lo que más importa es celebrar juntos este día tan especial. 🌸</p>
     </div>
   </div>
 </section>
@@ -1214,9 +1228,9 @@ footer{background:#010818;padding:56px 24px;text-align:center;
     <p class="s-label" style="color:rgba(255,255,255,.35)">No faltes</p>
     <h2 class="conf-title" style="margin-top:8px">¿Nos acompañas?</h2>
     <p class="conf-sub">Tu confirmación nos ayuda a tenerte preparado el mejor lugar.<br>Por favor confirma antes del 25 de Mayo.</p>
-    <p class="conf-dl">Confirmar antes del · 25 de Mayo, 2025</p>
+    <p class="conf-dl">Confirmar antes del · 25 de Mayo, 2026</p>
     <div class="conf-btns">
-      <a href="https://wa.me/523310225224?text=Hola%2C+confirmo+mi+asistencia+a+los+XV+a%C3%B1os+de+Danna+Valeria+Torres+Mart%C3%ADnez+el+30+de+Mayo+de+2025.+Mi+nombre+es%3A+" target="_blank" class="btn-wa">
+      <a href="https://wa.me/523310225224?text=Hola%2C+confirmo+mi+asistencia+a+los+XV+a%C3%B1os+de+Danna+Valeria+Torres+Mart%C3%ADnez+el+30+de+Mayo+de+2026.+Mi+nombre+es%3A+" target="_blank" class="btn-wa">
         <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         Confirmar por WhatsApp
       </a>
@@ -1256,7 +1270,7 @@ footer{background:#010818;padding:56px 24px;text-align:center;
 <!-- FOOTER -->
 <footer>
   <p class="ft-name">Danna Valeria Torres Martínez</p>
-  <p class="ft-event">XV Años · 30 de Mayo, 2025 · Zapopan, Jalisco</p>
+  <p class="ft-event">XV Años · 30 de Mayo, 2026 · Zapopan, Jalisco</p>
   <div class="ft-div"></div>
   <p class="ft-credit">Diseñado con cariño por <a href="#" target="_blank">AU Studio</a> · 2026</p>
 </footer>
