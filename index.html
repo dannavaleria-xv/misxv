@@ -684,33 +684,6 @@ body{font-family:var(--ss);background:var(--dark);color:#fff;overflow-x:hidden;l
 .conf-phone{font-size:.83rem;color:rgba(255,255,255,.35)}
 .conf-phone a{color:rgba(255,255,255,.75);text-decoration:none;font-weight:600}
 
-/* ─── QR ─── */
-#compartir{padding:100px 0;background:var(--darkm)}
-.qr-card{max-width:680px;margin:0 auto;
-  background:rgba(10,20,64,.3);border:1px solid rgba(147,197,253,.14);
-  border-radius:var(--r2);padding:56px;text-align:center}
-.qr-title{font-family:var(--sf);font-size:clamp(1.8rem,3vw,2.4rem);
-  font-weight:700;color:#fff;margin-bottom:6px}
-.qr-sub{font-size:.88rem;color:rgba(255,255,255,.4);margin-bottom:36px}
-.qr-box{width:166px;height:166px;background:#fff;
-  border:3px solid var(--g1);border-radius:14px;
-  margin:0 auto 28px;padding:10px;
-  display:flex;align-items:center;justify-content:center;overflow:hidden}
-.qr-box img{width:100%;height:100%;object-fit:contain}
-.qr-link{
-  background:rgba(79,142,247,.04);border:1px solid rgba(79,142,247,.14);
-  border-radius:10px;padding:12px 16px;
-  font-family:monospace;font-size:.78rem;color:var(--g4);
-  word-break:break-all;margin-bottom:22px;
-  display:flex;align-items:center;gap:12px;justify-content:space-between;text-align:left}
-.btn-copy{
-  padding:7px 14px;background:transparent;
-  border:1px solid rgba(147,197,253,.3);border-radius:6px;
-  color:var(--g4);font-family:var(--ss);font-size:.72rem;font-weight:600;
-  cursor:pointer;white-space:nowrap;transition:all .2s;min-height:34px}
-.btn-copy:hover{background:rgba(147,197,253,.1)}
-.qr-hint{font-size:.83rem;color:var(--g1)}
-
 /* ─── FOOTER ─── */
 footer{background:#010818;padding:56px 24px;text-align:center;
   border-top:1px solid rgba(79,142,247,.08)}
@@ -1283,23 +1256,6 @@ footer{background:#010818;padding:56px 24px;text-align:center;
   </svg>
 </div>
 
-<!-- ══════════════════════════════════════
-     QR / COMPARTIR
-══════════════════════════════════════ -->
-<section id="compartir" style="padding:100px 0">
-  <div class="wrap">
-    <div class="rv qr-card">
-      <p class="s-label">Invita a alguien especial</p>
-      <h2 class="qr-title" style="margin-top:8px">Comparte la Invitación</h2>
-      <p class="qr-sub">Escanea el código o copia el enlace</p>
-      <div class="qr-box"><img id="qrImg" src="" alt="QR"></div>
-      <div class="qr-link"><span id="pageUrl">Generando enlace…</span>
-        <button class="btn-copy" onclick="copyLink()">Copiar</button></div>
-      <p class="qr-hint">Escanea con la cámara de tu celular para abrir la invitación</p>
-    </div>
-  </div>
-</section>
-
 <!-- FOOTER -->
 <footer>
   <p class="ft-name">Danna Valeria Torres Martínez</p>
@@ -1740,35 +1696,6 @@ window.addEventListener('scroll',()=>{
   }
 })();
 
-/* ═══════════════════════════════════════════════
-   QR
-═══════════════════════════════════════════════ */
-window.addEventListener('load',()=>{
-  const url=window.location.href;
-  document.getElementById('pageUrl').textContent=url;
-  document.getElementById('qrImg').src=
-    `https://api.qrserver.com/v1/create-qr-code/?size=148x148&data=${encodeURIComponent(url)}&color=052e16&bgcolor=FFFFFF&margin=2`;
-});
-
-/* ═══════════════════════════════════════════════
-   COPY LINK
-═══════════════════════════════════════════════ */
-function copyLink(){
-  const url=window.location.href;
-  const btn=document.querySelector('.btn-copy');
-  if(navigator.clipboard){
-    navigator.clipboard.writeText(url).then(()=>{
-      btn.textContent='Copiado!';
-      btn.style.background='rgba(147,197,253,.15)';
-      setTimeout(()=>{btn.textContent='Copiar';btn.style.background=''},2000);
-    });
-  } else {
-    const t=document.createElement('textarea');
-    t.value=url;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);
-    btn.textContent='Copiado!';
-    setTimeout(()=>{btn.textContent='Copiar'},2000);
-  }
-}
 
 /* ═══════════════════════════════════════════════
    MODAL
